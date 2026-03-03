@@ -7,6 +7,10 @@ from .extensions import api, jwt, mail
 from .Database.User.user_data import UserDatabase
 from app.extensions import bcrypt
 from .User_Api.Blocklist import Blocklist
+import os
+import json
+import firebase_admin
+from firebase_admin import credentials
 
 
 def create_app():
@@ -16,12 +20,10 @@ def create_app():
 
     user_db = UserDatabase()
     user_db.create_index()
-    import firebase_admin
-    from firebase_admin import credentials
-
-    cred = credentials.Certificate("D:/MadHut/backend_app/serviceAccountKey.json")
+    firebase_credentials=os.getenv("FIREBASE_CREDENTIALS")
+    cred_dict=json.loads(firebase_credentials)
+    cred=credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
-
     CORS(
         app,
         resources={
