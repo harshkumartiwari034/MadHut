@@ -1,7 +1,7 @@
 from flask import request
 from flask_smorest import Blueprint
 from flask.views import MethodView
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from ..authorise import get_current_user
 from ..Database.User.customised_check_out import CustomisedProductDatabase
 
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
@@ -19,10 +19,10 @@ class CustomisedProduct(MethodView):
     def __init__(self):
         self.product_db = CustomisedProductDatabase()
 
-    @jwt_required(locations=['headers'])
     def post(self):
         from ..Config.cloudinary import cloudinary
-        email = get_jwt_identity()
+        email = get_current_user()
+        print(email)
 
         payment_method = request.form.get("payment_method")
         delivery_charge = request.form.get("delivery_charge")

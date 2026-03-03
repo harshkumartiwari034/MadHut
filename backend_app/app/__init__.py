@@ -20,10 +20,16 @@ def create_app():
 
     user_db = UserDatabase()
     user_db.create_index()
-    firebase_credentials=os.getenv("FIREBASE_CREDENTIALS")
-    cred_dict=json.loads(firebase_credentials)
-    cred=credentials.Certificate(cred_dict)
-    firebase_admin.initialize_app(cred)
+    firebase_credentials = os.getenv("FIREBASE_CREDENTIALS")
+
+    if not firebase_credentials:
+        raise ValueError("FIREBASE_CREDENTIALS not set in environment")
+
+    cred_dict = json.loads(firebase_credentials)
+    cred = credentials.Certificate(cred_dict)
+
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
     CORS(
         app,
         resources={

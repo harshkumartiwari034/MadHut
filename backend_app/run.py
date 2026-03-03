@@ -1,7 +1,7 @@
 from app import create_app
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="app/.env")
+load_dotenv()
 app = create_app()
 
 if __name__ == '__main__':
