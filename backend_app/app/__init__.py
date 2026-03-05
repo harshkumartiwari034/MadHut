@@ -12,6 +12,7 @@ import os
 import json
 import firebase_admin
 from firebase_admin import credentials
+from .extensions import cache
 
 
 # from .extensions import limiter
@@ -55,6 +56,7 @@ def create_app():
     api.init_app(app)
     jwt.init_app(app)
     mail.init_app(app)
+    cache.init_app(app)
 
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload):
